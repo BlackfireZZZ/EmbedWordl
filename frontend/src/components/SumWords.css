@@ -1,0 +1,54 @@
+/* Основной контейнер */
+.sum-words {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    transition: flex-direction 0.3s ease;
+}
+
+/* Стили для текущего слова */
+.current-word {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Стили для знака "+" */
+.plus-sign {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+/* Стили для поля ввода */
+.input-word {
+    font-size: 1.2rem;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.input-word:focus {
+    border-color: #007bff;
+}
+
+/* Адаптивный дизайн */
+@media (max-width: 768px) {
+    .sum-words {
+        flex-direction: column;
+    }
+
+    .plus-sign {
+        margin: 10px 0;
+    }
+}
