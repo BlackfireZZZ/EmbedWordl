@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SumWords.css";
 import base_url from "../config";
 
-const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
+const SumWords = ({ taskWord, currentWord, setCurrentWord, data, setData, counter, setCounter, isWin }) => {
     const [newWord, setNewWord] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false); // Для блокировки ввода и кнопки
     const [isPlus, setIsPlus] = useState(true); // Переключатель между "+" и "-"
@@ -26,6 +26,7 @@ const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    taskWord: taskWord,
                     word1: currentWord,
                     word2: newWord,
                     method: isPlus ? "plus" : "minus", // Выбираем метод в зависимости от кнопки
@@ -75,6 +76,7 @@ const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
                 // Обновляем текущее слово
                 setCurrentWord(resultWord);
                 setNewWord(""); // Очищаем поле ввода
+                setCounter(counter + 1); // Увеличиваем счетчик попыток
             } else {
                 alert("Не удалось получить результат");
             }
@@ -92,7 +94,7 @@ const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
                 <button
                     className="toggle-button"
                     onClick={toggleOperation}
-                    disabled={isSubmitting} // Блокируем во время запроса
+                    disabled={isSubmitting || isWin} // Блокируем во время запроса
                 >
                     {isPlus ? "+" : "-"} {/* Отображаем текущую операцию */}
                 </button>
@@ -103,12 +105,12 @@ const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
                 value={newWord}
                 onChange={handleInputChange}
                 placeholder="Enter a word"
-                disabled={isSubmitting} // Блокируем во время запроса
+                disabled={isSubmitting || isWin} // Блокируем во время запроса
             />
             <button
                 className="submit-button"
                 onClick={handleSubmit}
-                disabled={isSubmitting} // Блокируем во время запроса
+                disabled={isSubmitting || isWin} // Блокируем во время запроса
             >
                 {isSubmitting ? "Submitting..." : "Submit"} {/* Показываем статус */}
             </button>

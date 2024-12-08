@@ -3,3 +3,4 @@ venv
 ../.env
 application/SBER_VOICE.py
 application/config.py
+/application/embedmodel/cc.ru.300.bin.gz

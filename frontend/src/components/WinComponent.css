@@ -1,0 +1,71 @@
+/* WinComponent.css */
+
+.win-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.win-container {
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    width: 400px;
+}
+
+.win-container h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.win-container p {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.submit-button {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.submit-button:active {
+    background-color: #004080;
+}
+
+@media (max-width: 480px) {
+    .win-container {
+        padding: 16px;
+        width: 90%;
+    }
+
+    .win-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .win-container p {
+        font-size: 1rem;
+    }
+}
