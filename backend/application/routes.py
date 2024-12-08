@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from application import app
-from application.model.LLM import apply, start
+from application.model.model import apply, start
 
 
 @app.route('/ping', methods=['GET'])
@@ -13,10 +13,11 @@ def apply_to_model():
     word1 = request.json['word1']
     word2 = request.json['word2']
     method = request.json['method']
-    return jsonify({"result": apply(word1, word2, method)}), 200
+    result, possibility = apply(word1, word2, method)
+    return jsonify({"result": result, "possibility": possibility}), 200
 
 
-@app.route('/startgame', method=['GET'])
+@app.route('/startgame', methods=['GET'])
 def start_game():
     startword, taskword, possibility = start()
     return jsonify({"startword": startword, "taskword": taskword, "possibility": possibility}), 200

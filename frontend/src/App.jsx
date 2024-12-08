@@ -35,7 +35,7 @@ const App = () => {
         <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
             <GradientBar taskWord={taskWord} />
             <GraphComponent data={data} setCurrentWord={setCurrentWord} />
-            <SumWords currentWord={currentWord} setCurrentWord={setCurrentWord} />
+            <SumWords currentWord={currentWord} setCurrentWord={setCurrentWord} data={data} setData={setData} />
         </div>
     );
 };

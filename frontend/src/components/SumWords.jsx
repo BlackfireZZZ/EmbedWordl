@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./SumWords.css";
 import base_url from "../config";
 
-const SumWords = ({ currentWord, setCurrentWord }) => {
+const SumWords = ({ currentWord, setCurrentWord, data, setData }) => {
     const [newWord, setNewWord] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false); // Для блокировки ввода и кнопки
     const [isPlus, setIsPlus] = useState(true); // Переключатель между "+" и "-"
@@ -36,10 +36,44 @@ const SumWords = ({ currentWord, setCurrentWord }) => {
                 throw new Error("Ошибка при выполнении запроса");
             }
 
-            const data = await response.json();
+            const responseData = await response.json();
 
-            if (data.result) {
-                setCurrentWord(data.result); // Обновляем текущее слово
+            if (responseData.result) {
+                const resultWord = responseData.result;
+                const possibility = responseData.possibility;
+
+                // Проверяем, существует ли уже слово в data
+                const existingWordIndex = data.findIndex((item) => item[0] === resultWord);
+                const currentWordIndex = data.findIndex((item) => item[0] === currentWord);
+
+                if (existingWordIndex !== -1) {
+                    // Если слово уже существует, просто связываем вершины
+                    if (currentWordIndex !== -1 && !data[currentWordIndex][1].includes(existingWordIndex)) {
+                        data[currentWordIndex][1].push(existingWordIndex);
+                    }
+                    if (!data[existingWordIndex][1].includes(currentWordIndex)) {
+                        data[existingWordIndex][1].push(currentWordIndex);
+                    }
+                } else {
+                    // Если слово не существует, создаем новую вершину
+                    const newWordData = [
+                        resultWord, // Уникальное слово
+                        [], // Список индексов для новых связей
+                        possibility, // Используем вероятность из ответа
+                    ];
+
+                    if (currentWordIndex !== -1) {
+                        data[currentWordIndex][1].push(data.length); // Связываем текущую вершину
+                    }
+
+                    newWordData[1].push(currentWordIndex); // Связываем новую вершину с текущей
+
+                    // Обновляем data
+                    setData([...data, newWordData]);
+                }
+
+                // Обновляем текущее слово
+                setCurrentWord(resultWord);
                 setNewWord(""); // Очищаем поле ввода
             } else {
                 alert("Не удалось получить результат");
