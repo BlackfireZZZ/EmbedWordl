@@ -1,24 +1,43 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import GraphComponent from './components/GraphComponent';
 import SumWords from "./components/SumWords";
+import GradientBar from "./components/GradientBar";
+import base_url from "./config";
 
 const App = () => {
-  const [currentWord, setCurrentWord] = useState('First Value');
-  const data = [
-    ['First value', [1, 2]],
-    ['Second value', [3, 4]],
-    ['Third value', [5]],
-    ['Fourth value', []],
-    ['Fifth value', [0]],
-    ['Sixth value', [2, 4]],
-  ];
+    const [currentWord, setCurrentWord] = useState('');
+    const [taskWord, setTaskWord] = useState('');
+    const [data, setData] = useState([]);
 
-  return (
-      <div style={{width: "100%", height: "100vh", display: "flex", flexDirection: "column"}}>
-          <GraphComponent data={data} setCurrentWord={setCurrentWord}/>
-          <SumWords currentWord={currentWord}/>
-      </div>
-  );
+    const StartGame = async () => {
+        try {
+            const response = await fetch(`${base_url}/startgame`);
+            if (!response.ok) {
+                throw new Error('Failed to start the game');
+            }
+            const { startword, taskword, possibility } = await response.json();
+
+            // Обновляем состояния
+            setCurrentWord(startword);
+            setTaskWord(taskword);
+            setData([[startword, [], possibility]]);
+        } catch (error) {
+            console.error('Error in StartGame:', error);
+        }
+    };
+
+    // Вызываем StartGame при первом запуске
+    useEffect(() => {
+        StartGame();
+    }, []);
+
+    return (
+        <div style={{ width: "100%", height: "100vh", display: "flex", flexDirection: "column" }}>
+            <GradientBar taskWord={taskWord} />
+            <GraphComponent data={data} setCurrentWord={setCurrentWord} />
+            <SumWords currentWord={currentWord} setCurrentWord={setCurrentWord} />
+        </div>
+    );
 };
 
 export default App;

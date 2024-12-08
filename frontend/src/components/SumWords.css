@@ -36,10 +36,58 @@
     border-radius: 4px;
     outline: none;
     transition: border-color 0.3s ease;
+    height: 40px; /* Высота поля ввода */
 }
 
 .input-word:focus {
     border-color: #007bff;
+}
+
+/* Стили для кнопки отправки */
+.submit-button {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    height: 40px; /* Высота кнопки, чтобы совпадала с полем ввода */
+}
+
+.submit-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.submit-button:active {
+    background-color: #004080;
+}
+
+/* Стили для новой кнопки переключения (+/-) */
+.toggle-button {
+    font-size: 1.2rem;
+    padding: 8px 16px;
+    color: #fff;
+    background-color: #28a745; /* Зеленый цвет для кнопки переключения */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    height: 40px; /* Высота кнопки, чтобы совпадала с полем ввода */
+    display: flex;
+    align-items: center; /* Выравнивание текста по центру */
+    justify-content: center;
+}
+
+.toggle-button:hover {
+    background-color: #218838;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+}
+
+.toggle-button:active {
+    background-color: #1e7e34;
 }
 
 /* Адаптивный дизайн */
@@ -50,5 +98,11 @@
 
     .plus-sign {
         margin: 10px 0;
+    }
+
+    .submit-button,
+    .toggle-button {
+        width: 100%; /* Растянуть кнопки на всю ширину в мобильной версии */
+        margin-top: 10px;
     }
 }

@@ -1,0 +1,5 @@
+.idea
+venv
+../.env
+application/SBER_VOICE.py
+application/config.py

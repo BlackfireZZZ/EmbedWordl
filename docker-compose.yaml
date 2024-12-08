@@ -1,0 +1,23 @@
+services:
+  app:
+    build:
+      dockerfile: backend/Dockerfile
+    container_name: WordleApp
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: WordleNginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    restart: on-failure
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+volumes:
+  app:

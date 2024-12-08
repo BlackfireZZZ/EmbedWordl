@@ -10,8 +10,9 @@ const GraphComponent = ({ data, setCurrentWord }) => {
         const nodes = [];
         const links = [];
 
-        data.forEach(([value, connectedIndices], index) => {
-            nodes.push({ id: index, text: value }); // Assign text to each node
+        data.forEach(([value, connectedIndices, probability], index) => {
+            const color = getGradientColor(probability);
+            nodes.push({ id: index, text: value, probability, color });
             connectedIndices.forEach((connectedIndex) => {
                 links.push({ source: index, target: connectedIndex });
             });
@@ -20,9 +21,27 @@ const GraphComponent = ({ data, setCurrentWord }) => {
         setGraphData({ nodes, links });
     }, [data]);
 
+    const getGradientColor = (probability) => {
+        let r, g, b;
+        if (probability <= 0.5) {
+            // Переход от красного к желтому
+            r = 255;
+            g = Math.round(255 * (probability / 0.5)); // Интерполяция от 0 до 255
+            b = 150;
+        } else {
+            // Переход от желтого к зеленому
+            r = Math.round(255 * ((1 - probability) / 0.5)); // Интерполяция от 255 до 0
+            g = 255;
+            b = 150;
+        }
+        return `rgb(${r}, ${g}, ${b})`;
+    };
+
+
     useEffect(() => {
         const handleResize = () => {
             const sumWordsHeight = document.querySelector(".sum-words")?.offsetHeight || 0;
+            const gradientBarHeight = document.querySelector(".gradient-bar")?.offsetHeight || 0;
             setAvailableHeight(window.innerHeight - sumWordsHeight);
         };
 
@@ -35,8 +54,6 @@ const GraphComponent = ({ data, setCurrentWord }) => {
     useEffect(() => {
         if (graphRef.current) {
             graphRef.current.d3Force("center", null); // Disable initial animation
-
-            // Handle zoom constraints
         }
     }, [graphData]);
 
@@ -50,10 +67,11 @@ const GraphComponent = ({ data, setCurrentWord }) => {
                 nodeCanvasObject={(node, ctx, globalScale) => {
                     const label = node.text;
                     const fontSize = 16 / globalScale;
-                    ctx.font = `${fontSize}px Sans-Serif`;
+                    ctx.font = `bold ${fontSize}px Sans-Serif`;
                     const textWidth = ctx.measureText(label).width;
                     const bckgDimensions = [textWidth, fontSize].map((n) => n + fontSize * 0.2);
 
+                    // Background for text
                     ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
                     ctx.fillRect(
                         node.x - bckgDimensions[0] / 2,
@@ -61,9 +79,10 @@ const GraphComponent = ({ data, setCurrentWord }) => {
                         ...bckgDimensions
                     );
 
+                    // Text
                     ctx.textAlign = "center";
                     ctx.textBaseline = "middle";
-                    ctx.fillStyle = node.color;
+                    ctx.fillStyle = node.color; // Use gradient color
                     ctx.fillText(label, node.x, node.y);
 
                     node.__bckgDimensions = bckgDimensions;
@@ -86,7 +105,7 @@ const GraphComponent = ({ data, setCurrentWord }) => {
                 width={window.innerWidth}
                 height={window.innerHeight}
                 minZoom={0.7} // Minimum zoom level
-                maxZoom={2} // Maximum zoom level
+                maxZoom={5} // Maximum zoom level
             />
         </div>
     );
