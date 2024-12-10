@@ -1,10 +1,11 @@
+import random
+
 from application import model, mystem
 
 
 def normalized_cosine_similarity(word1, word2):
     cosine_similarity = model.similarity(word1, word2)
-    normalized_similarity = (cosine_similarity + 1) / 2
-    return normalized_similarity
+    return (cosine_similarity + 1) / 2
 
 
 def is_noun(word):

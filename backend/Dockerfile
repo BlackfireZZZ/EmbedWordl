@@ -1,20 +1,16 @@
 # Используем официальный базовый образ для Python 3.12
-FROM python:3.12-slim
+FROM python:3.12
 
 # Устанавливаем рабочую директорию для приложения
-WORKDIR /backend
+WORKDIR /app
 
 # Копируем файл зависимостей
-COPY backend/requirements.txt requirements.txt
+COPY backend/requirements.txt backend/requirements.txt
 
 # Устанавливаем Python зависимости
-RUN pip3 install --no-cache-dir -r requirements.txt
-
-# Копируем модель
-COPY backend/application/embedmodel/cc.ru.300.bin.gz /backend/application/embedmodel/cc.ru.300.bin.gz
+RUN pip3 install --no-cache-dir -r backend/requirements.txt
 
 # Копируем остальную часть приложения
-COPY backend/ .
+COPY . .
 
-# Устанавливаем команду запуска
 ENTRYPOINT ["python3", "app.py"]

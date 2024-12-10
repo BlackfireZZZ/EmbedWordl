@@ -14,10 +14,18 @@ const App = () => {
 
     const StartGame = async () => {
         try {
-            const response = await fetch(`${base_url}/startgame`);
+            const response = await fetch(`${base_url}/startgame`, {
+                method: 'GET', // Явно указываем метод
+                headers: {
+                    'Content-Type': 'application/json', // Убедимся, что сервер ожидает JSON
+                },
+            });
+
             if (!response.ok) {
-                throw new Error('Failed to start the game');
+                // Если статус ответа не в пределах 200-299, генерируем ошибку
+                throw new Error(`Failed to start the game: ${response.status} ${response.statusText}`);
             }
+
             const { startword, taskword, possibility } = await response.json();
 
             // Обновляем состояния
@@ -29,6 +37,7 @@ const App = () => {
             console.error('Error in StartGame:', error);
         }
     };
+
 
     // Вызываем StartGame при первом запуске
     useEffect(() => {
