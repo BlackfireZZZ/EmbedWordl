@@ -24,18 +24,19 @@ const GraphComponent = ({ data, setCurrentWord }) => {
     const getGradientColor = (probability) => {
         let r, g, b;
         if (probability <= 0.5) {
-            // Переход от красного к желтому
+            // Переход от красного к нейтральному
             r = 255;
-            g = Math.round(255 * (probability / 0.5)); // Интерполяция от 0 до 255
-            b = 150;
+            g = Math.round(102 * (probability / 0.5)); // Интерполяция от 0 до 102
+            b = Math.round(102 * (probability / 0.5)); // Интерполяция от 0 до 102
         } else {
-            // Переход от желтого к зеленому
-            r = Math.round(255 * ((1 - probability) / 0.5)); // Интерполяция от 255 до 0
+            // Переход от нейтрального к зеленому
+            r = Math.round(255 * ((1 - probability) / 0.5)); // Интерполяция от 255 до 102
             g = 255;
-            b = 150;
+            b = Math.round(102 * ((1 - probability) / 0.5)); // Интерполяция от 102 до 0
         }
         return `rgb(${r}, ${g}, ${b})`;
     };
+
 
 
     useEffect(() => {
