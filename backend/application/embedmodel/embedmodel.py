@@ -57,7 +57,7 @@ def get_start_words(num_words=2):
         if word.islower() and is_noun(word):
             nouns.append(word)
 
-    return nouns[-2], nouns[-1]
+    return nouns[-2], nouns[-1], normalized_cosine_similarity(nouns[-2], nouns[-1])
 
 
 
