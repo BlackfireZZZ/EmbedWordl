@@ -16,7 +16,19 @@ const SumWords = ({ taskWord, currentWord, setCurrentWord, data, setData, counte
     };
 
     const handleSubmit = async () => {
-        if (!newWord.trim()) return; // Если поле пустое, не отправляем запрос
+        const trimmedWord = newWord.trim();
+
+        // Валидация: одно слово на русском языке без пробелов
+        const russianWordRegex = /^[а-яА-ЯёЁ]+$/;
+        if (!trimmedWord) {
+            alert("Поле ввода не должно быть пустым.");
+            return;
+        }
+        if (!russianWordRegex.test(trimmedWord)) {
+            alert("Пожалуйста, введите одно слово на русском языке без пробелов.");
+            return;
+        }
+
         setIsSubmitting(true); // Блокируем кнопку и поле ввода
 
         try {
@@ -28,7 +40,7 @@ const SumWords = ({ taskWord, currentWord, setCurrentWord, data, setData, counte
                 body: JSON.stringify({
                     taskWord: taskWord,
                     word1: currentWord,
-                    word2: newWord,
+                    word2: trimmedWord,
                     method: isPlus ? "plus" : "minus", // Выбираем метод в зависимости от кнопки
                 }),
             });
@@ -86,6 +98,7 @@ const SumWords = ({ taskWord, currentWord, setCurrentWord, data, setData, counte
             setIsSubmitting(false); // Разблокируем кнопку и поле ввода
         }
     };
+
 
     return (
         <div className="sum-words">
