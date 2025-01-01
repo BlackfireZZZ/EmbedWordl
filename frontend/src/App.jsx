@@ -36,6 +36,7 @@ const App = () => {
         } catch (error) {
             console.error('Error in StartGame:', error);
         }
+
     };
 
 
